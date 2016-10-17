@@ -9,27 +9,31 @@ db = sqlite3.connect(f) #open if f exists, otherwise create
 c = db.cursor()    #facilitate db ops
 
 #==========================================================
-#INSERT YOUR POPULATE CODE IN THIS ZONE
-#...perhaps by beginning with these examples...
 
-#db.close()
+file1 = open ("peeps.csv")
+dict1 = csv.DictReader(file1)
 
-
-q = "CREATE TABLE students (name TEXT, age INTEGER, id INTEGER)"
-c.execute(q)    #run SQL query
-fObj = open("peeps.csv") 
-d=csv.DictReader(fObj)
-for k in d:
-    p = "INSERT INTO students VALUES ("+k['name']+","+k['age']+","+k['id']+")"
-    c.execute(p)
-
-
-
-
-q = "CREATE TABLE courses (code TEXT, id INTEGER, mark INTEGER)"
-
+q = "CREATE TABLE students (name TEXT, id INTEGER)"
 c.execute(q)
 
+for item in dict1:
+    name = item['name']
+    id = item['id']
+    q = "INSERT INTO students VALUES('" + name + "','" +id + "');"
+    c.execute(q)
+
+file2 = open ("courses.csv")
+dict2 = csv.DictReader(file2)
+
+q = "CREATE TABLE courses (code TEXT, id INTEGER, mark INTEGER)"
+c.execute(q)
+
+for item in dict2:
+    code = item['code']
+    id = item['id']
+    mark = item['mark']
+    q = "INSERT INTO courses VALUES('" + code + "','" + id + "','" + mark + "');"
+    c.execute(q)
 
 #==========================================================
 db.commit() #save changes
